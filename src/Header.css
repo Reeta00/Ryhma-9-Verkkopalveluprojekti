@@ -1,0 +1,25 @@
+/* Header.css */
+header {
+    background-color: #2a6562; /* Set your desired background color */
+    padding: 10px; /* Add padding for better spacing */
+}
+
+/* Set the background color for the entire navigation bar */
+.navbar {
+    background-color: #2a6562 !important; /* Use !important to ensure the style is applied */
+}
+
+.navbar-brand {
+    color: #ffffff; /* Set the color of the navbar brand text */
+}
+
+.navbar-nav a {
+    color: rgb(0, 0, 0); /* Set the color of the navigation links */
+    margin-right: 15px; /* Add margin to the right of each link for spacing */
+}
+
+.navbar-toggler-icon {
+    background-color: #ffffff; /* Set the color of the navbar toggler icon */
+}
+
+/* Add more styles as needed */

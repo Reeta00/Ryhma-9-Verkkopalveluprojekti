@@ -1,6 +1,6 @@
-// Dynamic_header.js
+// Dynamic header
 import React from 'react';
-import './Header.css'; // Import the CSS file for styling
+import './Style.css'; // Import the CSS file for styling
 
 function Header() {
   return (
@@ -19,9 +19,9 @@ function Header() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarScroll">
+          <div className="collapse navbar-collapse justify-content-end" id="navbarScroll">
             <ul
-              className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"
+              className="navbar-nav my-2 my-lg-0 navbar-nav-scroll"
               style={{ '--bs-scroll-height': '100px' }}
             >
               <li className="nav-item">
@@ -51,4 +51,3 @@ function Header() {
 }
 
 export default Header;
-

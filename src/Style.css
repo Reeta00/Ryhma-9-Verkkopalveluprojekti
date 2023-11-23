@@ -1,4 +1,4 @@
-/* Header.css */
+/* Style */
 header {
     background-color: #2a6562; /* Set your desired background color */
     padding: 10px; /* Add padding for better spacing */
@@ -20,6 +20,16 @@ header {
 
 .navbar-toggler-icon {
     background-color: #ffffff; /* Set the color of the navbar toggler icon */
+}
+
+
+/* Footer.css */
+footer {
+    background-color: #2a6562; /* Set your desired background color */
+    padding: 10px; /* Add padding for better spacing */
+    color: #ffffff; /* Set the color of the text */
+    text-align: center; /* Center the text */
+    margin-top: 20px; /* Add top margin for separation */
 }
 
 /* Add more styles as needed */

@@ -1,45 +1,36 @@
-import React from 'react';
-// Product component to display individual products
+import axios from "axios";
+import React from "react";
+import { useState, useEffect } from "react";
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 
-export const Product = ({ name, price, image }) => (
-    <div className="product">
-        <img src={image} alt={name} />
-        <h3>{name}</h3>
-        <p>${price}</p>
-        <button>Add to Cart</button>
-    </div>
-);
-
-// ProductList component to display a list of products
 export const ProductList = () => {
-    // Sample product data
-    const products = [
-        {
-            id: 1,
-            name: 'Kirja 1',
-            price: 10,
-            image: 'https://via.placeholder.com/150',
-        },
-        {
-            id: 2,
-            name: 'Kirja 2',
-            price: 15,
-            image: 'https://via.placeholder.com/150',
-        },
-        // Add more product objects as needed
-    ];
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/books').then((response) => {
+            setProducts(response.data);
+        });
+    }, []);
 
     return (
-        <div className="product-list">
-            <h2>Tervetuloa Novellinurkkaan!</h2>
-            {products.map((product) => (
-                <Product
-                    key={product.id}
-                    name={product.name}
-                    price={product.price}
-                    image={product.image}
-                />
-            ))}
-        </div>
+        <Container className="mt-5">
+            <h2 className="mb-4">Tervetuloa Novellinurkkaan!</h2>
+            <Row>
+                {products.map((val, index) => (
+                    <Col key={index} md={4} className="mb-4">
+                        <Card>
+                            <Card.Img variant="top" src={val.image} alt={val.title} />
+                            <Card.Body>
+                                <Card.Title>{val.title}</Card.Title>
+                                <Card.Text>
+                                    Hinta: {val.price}
+                                </Card.Text>
+                                <Button variant="outline-dark">Lisää ostoskoriin</Button>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                ))}
+            </Row>
+        </Container>
     );
 };

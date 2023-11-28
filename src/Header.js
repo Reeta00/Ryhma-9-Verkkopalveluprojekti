@@ -1,5 +1,6 @@
 // Dynamic Header
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Style.css'; // Import the CSS file for styling
 
 function Header() {
@@ -11,8 +12,8 @@ function Header() {
           <button
             className="navbar-toggler"
             type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarScroll"
+            // Tämä korvaa data-toggle ja data-target
+            onClick={() => document.getElementById('navbarScroll').classList.toggle('show')}
             aria-controls="navbarScroll"
             aria-expanded="false"
             aria-label="Toggle navigation"

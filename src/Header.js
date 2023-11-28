@@ -1,6 +1,5 @@
 // Dynamic Header
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './Style.css'; // Import the CSS file for styling
 
 function Header() {

@@ -19,11 +19,11 @@ app.post('/add', (req, res) => {
     const author = req.body.author;
     const publish = req.body.publish;
     const description = req.body.description;
-    const category = req.body.category;
+    const category_id = req.body.category_id;
     const price = req.body.price;
 
-    db.query('INSERT INTO product (title, author, publish, description, category, price) VALUES (?, ?, ?, ?, ?, ?)',
-        [title, author, publish, description, category, price], (err, result) => {
+    db.query('INSERT INTO product (title, author, publish, description, category_id, price) VALUES (?, ?, ?, ?, ?, ?)',
+        [title, author, publish, description, category_id, price], (err, result) => {
             if (err) {
                 console.log(err);
             } else {

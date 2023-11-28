@@ -20,6 +20,7 @@ export const Admin = () => {
 
     const [newDescription, setNewDescription] = useState('');
 
+    //Lisää kirjan kantaan
     const addBook = () => {
         axios.post('http://localhost:3001/add', {
             title: title,
@@ -33,17 +34,25 @@ export const Admin = () => {
         })
     };
 
+    //Hakee kannasta kaikki kirjat
     const getBooks = () => {
         axios.get('http://localhost:3001/books').then((response) => {
-            setBookList(response.data);
+
+            //Muutetaan category_id näkymään id numeron sijaan kategorian nimenä
+            const booksWithCategoryName = response.data.map((book) => {
+                const category = categories.find((cat) => cat.category_id === book.category_id);
+                return { ...book, category_name: category ? category.name : '' };
+            });
+            setBookList(booksWithCategoryName);
         });
     };
 
+    //Muuttaa kuvausta tietokannassa
     const updateDescription = (product_id) => {
         axios.put('http://localhost:3001/update', { description: newDescription, product_id: product_id }).then(
             (response) => {
                 setBookList(bookList.map((val) => {
-                    return val.product_id === product_id ? { product_id: val.product_id, title: val.title, author: val.author, publish: val.publish, description: newDescription, category: val.category, price: val.price } : val;
+                    return val.product_id === product_id ? { product_id: val.product_id, title: val.title, author: val.author, publish: val.publish, description: newDescription, category_id: val.category_id, price: val.price } : val;
                 }));
             });
     };
@@ -70,6 +79,7 @@ export const Admin = () => {
         setSelectedCategory(event.target.value);
     };
 
+    //Poistaa tuotteen kannasta
     const deleteBook = (product_id) => {
         axios.delete(`http://localhost:3001/delete/${product_id}`).then((response) => {
             setBookList(bookList.filter((val) => {
@@ -149,7 +159,7 @@ export const Admin = () => {
                                     <h3 className="card-subtitle mb-2 text-muted">Kirjailija: {val.author}</h3>
                                     <p className="card-text">Julkaisuvuosi: {val.publish}</p>
                                     <p className="card-text">Kuvaus: {val.description}</p>
-                                    <p className="card-text">Kategoria: {val.category}</p>
+                                    <p className="card-text">Kategoria: {val.category_name}</p>
                                     <p className="card-text">Hinta: {val.price}</p>
                                     <div className="input-group mb-3">
                                         <input type="text" className="form-control" placeholder="Päivitä kuvausta" onChange={(e) => { setNewDescription(e.target.value) }} />

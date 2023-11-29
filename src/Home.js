@@ -19,11 +19,11 @@ export const ProductList = () => {
                 {products.map((val, index) => (
                     <Col key={index} md={4} className="mb-4">
                         <Card>
-                            <Card.Img variant="top" src={val.image} alt={val.title} />
+                            <Card.Img className="custom-card-img" variant="top" src={`http://localhost:3000/${val.img_url}`} alt={val.title} />
                             <Card.Body>
                                 <Card.Title>{val.title}</Card.Title>
                                 <Card.Text>
-                                    Hinta: {val.price}
+                                    Hinta: {val.price} €
                                 </Card.Text>
                                 <Button variant="outline-dark">Lisää ostoskoriin</Button>
                             </Card.Body>

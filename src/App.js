@@ -5,7 +5,6 @@ import { ProductList } from './Home';
 import { Admin } from './Admin';
 import { Categories } from './Categories';
 
-//import { ProductList } from './Product';
 
 
 // Main App component

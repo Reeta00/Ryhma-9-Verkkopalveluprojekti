@@ -1,0 +1,54 @@
+/* SAA MUOKATA MIELENSÄ MUKAAN :) */
+
+.custom-class {
+    padding: 50px 50px 50px;
+    background: rgb(168, 202, 185);
+    border-radius: 10px;
+}
+
+.header {
+    margin-bottom: 30px;
+    font-size: 30px;
+    font-weight: 400;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+
+.input {
+
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.input img {
+
+    margin-right: 10px;
+}
+
+.forgotten-password {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.forgotten-password button {
+
+    background: none;
+    border: none;
+    color: #031930;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.submit-container {
+
+    margin-top: 20px;
+}
+
+.submit {
+    margin-top: 10px;
+    background: rgb(10, 63, 38);
+    border: none;
+}

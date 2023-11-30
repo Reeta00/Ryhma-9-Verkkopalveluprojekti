@@ -5,6 +5,7 @@ import { ProductList } from './Home';
 import { Admin } from './Admin';
 import { Categories } from './Categories';
 import Cart from './Cart';
+import { Login } from './Login';
 
 
 
@@ -16,6 +17,7 @@ const App = () => {
         <Route path='/' element={<ProductList />} />
         <Route path='/productList' element={<ProductList />} />
         <Route path='/categories' element={<Categories />} />
+        <Route path='/login' element={<Login />} />
         <Route path='/admin' element={<Admin />} />
         <Route path='/cart' element={<Cart />} />
       </Routes>

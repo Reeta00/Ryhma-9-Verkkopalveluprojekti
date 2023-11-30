@@ -57,6 +57,11 @@ function Header() {
                 </a>
               </li>
               <li className="nav-item">
+                <a className="nav-link" href="/login">
+                  Kirjaudu
+                </a>
+              </li>
+              <li className="nav-item">
                 <a className="nav-link" href="/admin">
                   Ylläpito
                 </a>
@@ -83,7 +88,7 @@ function Header() {
       </nav>
 
       {/* Cart modal */}
-            <Modal show={isCartModalOpen} onHide={closeCartModal} dialogClassName="modal-right">
+      <Modal show={isCartModalOpen} onHide={closeCartModal} dialogClassName="modal-right">
         <Modal.Header closeButton>
           <Modal.Title>Ostoskori</Modal.Title>
         </Modal.Header>

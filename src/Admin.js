@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './Style.css';
 
 
 export const Admin = () => {
@@ -49,10 +50,10 @@ export const Admin = () => {
 
     //Muuttaa kuvausta tietokannassa
     const updateDescription = (product_id) => {
-        axios.put('http://localhost:3001/update', { description: newDescription, product_id: product_id }).then(
+        axios.put('http://localhost:3001/update', { product_description: newDescription, product_id: product_id }).then(
             (response) => {
                 setBookList(bookList.map((val) => {
-                    return val.product_id === product_id ? { product_id: val.product_id, title: val.title, author: val.author, publish: val.publish, description: newDescription, category_id: val.category_id, price: val.price } : val;
+                    return val.product_id === product_id ? { product_id: val.product_id, title: val.title, author_id: val.author_id, publish: val.publish, product_description: newDescription, category_id: val.category_id, price: val.price } : val;
                 }));
             });
     };
@@ -156,11 +157,11 @@ export const Admin = () => {
                             <div key={index} className="card mb-3">
                                 <div className="card-body">
                                     <h3 className="card-title">Nimi: {val.title}</h3>
-                                    <h3 className="card-subtitle mb-2 text-muted">Kirjailija: {val.author}</h3>
+                                    <h3 className="card-subtitle mb-2 text-muted">Kirjailija: {val.author_id}</h3>
                                     <p className="card-text">Julkaisuvuosi: {val.publish}</p>
-                                    <p className="card-text">Kuvaus: {val.description}</p>
+                                    <p className="card-text">Kuvaus: {val.product_description}</p>
                                     <p className="card-text">Kategoria: {val.category_name}</p>
-                                    <p className="card-text">Hinta: {val.price}</p>
+                                    <p className="card-text">Hinta: {val.price} €</p>
                                     <div className="input-group mb-3">
                                         <input type="text" className="form-control" placeholder="Päivitä kuvausta" onChange={(e) => { setNewDescription(e.target.value) }} />
                                         <button className="btn btn-outline-secondary" onClick={() => { updateDescription(val.product_id) }}>Päivitä kuvausta</button>

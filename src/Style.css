@@ -49,4 +49,19 @@ footer {
     object-fit: cover;
 }
 
+/* Cart style */
+.modal-right {
+    position: fixed;
+    right: 0;
+    margin-right: 0;
+  }
+  
+  .modal-dialog {
+    margin: 0;
+    max-width: 100%;
+    width: 20rem; 
+  }
+  
 /* Add more styles as needed */
+
+  

@@ -58,6 +58,17 @@ export const Admin = () => {
             });
     };
 
+    const markAsBestseller = (product_id, is_bestseller) => {
+        axios.put(`http://localhost:3001/bestsellers/${product_id}`, { is_bestseller })
+        .then((response) => {
+            console.log(response.data);
+            getBooks();
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    }
+
     useEffect(() => {
         axios.get('http://localhost:3001/categories')
             .then(response => setCategories(response.data))
@@ -165,8 +176,8 @@ export const Admin = () => {
                                     <div className="input-group mb-3">
                                         <input type="text" className="form-control" placeholder="Päivitä kuvausta" onChange={(e) => { setNewDescription(e.target.value) }} />
                                         <button className="btn btn-outline-secondary" onClick={() => { updateDescription(val.product_id) }}>Päivitä kuvausta</button>
-
                                         <button className="btn btn-outline-secondary" onClick={() => { deleteBook(val.product_id) }}>Poista kirja</button>
+                                        <button className="btn btn-outline-secondary" onClick={() =>  markAsBestseller(val.product_id, !val.is_bestseller)}>{val.is_bestseller ? 'Poista myydyimmistä' : 'Merkkaa myydyimmäksi'}</button>
                                     </div>
                                 </div>
                             </div>

@@ -37,6 +37,8 @@ CREATE TABLE
         FOREIGN KEY (author_id) REFERENCES author(author_id)
     );
 
+    ALTER TABLE product ADD COLUMN is_bestseller BOOLEAN DEFAULT false;
+
 INSERT INTO
     product (
         title,

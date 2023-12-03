@@ -94,6 +94,32 @@ app.delete('/delete/:product_id', (req, res) => {
     })
 })
 
+app.get('/bestsellers', (req, res) => {
+    const query = 'SELECT * FROM product WHERE is_bestseller = true';
+    db.query(query, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+app.put('/bestsellers/:product_id', (req, res) => {
+    const { product_id } = req.params;
+    const { is_bestseller } = req.body;
+
+    const query = 'UPDATE product SET is_bestseller = ? WHERE product_id = ?';
+
+    db.query(query, [is_bestseller, product_id], (error, results) => {
+        if (error) {
+            console.log(error);
+        } else {
+            res.json({ success: true});
+        }
+    });
+});
 
 app.listen(3001, () => {
     console.log('Your server is running on port 3001!');

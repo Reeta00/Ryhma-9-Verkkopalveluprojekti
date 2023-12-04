@@ -1,6 +1,6 @@
 /* Style */
 header {
-    background-color: #2a6562;
+    background-color: #07436f;
     /* Set your desired background color */
     padding: 10px;
     /* Add padding for better spacing */
@@ -8,7 +8,7 @@ header {
 
 /* Set the background color for the entire navigation bar */
 .navbar {
-    background-color: #2a6562 !important;
+    background-color: #1388af !important;
     /* Use !important to ensure the style is applied */
 }
 
@@ -36,7 +36,7 @@ footer {
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: #2a6562;
+    background-color: #07436f;
     /* Set your desired background color */
     padding: 10px;
     /* Add padding for better spacing */

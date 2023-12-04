@@ -2,7 +2,7 @@
 
 .custom-class {
     padding: 50px 50px 50px;
-    background: rgb(168, 202, 185);
+    background: #1468a1;
     border-radius: 10px;
 }
 
@@ -49,6 +49,6 @@
 
 .submit {
     margin-top: 10px;
-    background: rgb(10, 63, 38);
+    background: #9acaf2;
     border: none;
 }

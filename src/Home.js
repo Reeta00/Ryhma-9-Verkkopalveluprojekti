@@ -1,7 +1,8 @@
 import axios from "axios";
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { HomeContext } from "./context/HomeContext";
 
 export const ProductList = () => {
     const [products, setProducts] = useState([]);
@@ -11,6 +12,9 @@ export const ProductList = () => {
             setProducts(response.data);
         });
     }, []);
+
+    //Tuodaan HomeContext.js:stä addToCart toiminto
+    const { addToCart } = useContext(HomeContext);
 
     return (
         <Container className="mt-5">
@@ -25,7 +29,7 @@ export const ProductList = () => {
                                 <Card.Text>
                                     Hinta: {val.price} €
                                 </Card.Text>
-                                <Button variant="outline-dark">Lisää ostoskoriin</Button>
+                                <Button variant="outline-dark" onClick={() => addToCart(val.product_id)}>Lisää ostoskoriin</Button>
                             </Card.Body>
                         </Card>
                     </Col>

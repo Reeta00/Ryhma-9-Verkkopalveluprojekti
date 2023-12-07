@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import CartContent from './Cart'; // Cart content
+
 
 function Header() {
   // Define handlePurchase function
@@ -99,7 +99,7 @@ function Header() {
         </Modal.Header>
         <Modal.Body>
           {/* Ostoskorin sisältö */}
-          <CartContent />
+
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={closeCartModal}>

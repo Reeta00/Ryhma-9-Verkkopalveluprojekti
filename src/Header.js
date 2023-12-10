@@ -2,24 +2,25 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
+import { CartContent } from './CartContent';
 
 
 function Header() {
-  // Define handlePurchase function
+
   const handlePurchase = () => {
-    // Do something here
+
     console.log('Purchase made!');
   };
 
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
 
-  // Open the cart modal
+
   const openCartModal = (event) => {
     event.preventDefault();
     setIsCartModalOpen(true);
   };
 
-  // Close the cart modal
+
   const closeCartModal = () => {
     setIsCartModalOpen(false);
   };
@@ -28,7 +29,7 @@ function Header() {
     <header>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-          <a className="navbar-brand" href="/productList">
+          <a className="navbar-brand" href="/home">
             Novellinurkka
           </a>
           <button
@@ -46,11 +47,6 @@ function Header() {
               className="navbar-nav my-2 my-lg-0 navbar-nav-scroll"
               style={{ '--bs-scroll-height': '100px' }}
             >
-              <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/productList">
-                  Home
-                </a>
-              </li>
               <li className="nav-item">
                 <a className="nav-link" href="/categories">
                   Kategoriat
@@ -98,7 +94,7 @@ function Header() {
           <Modal.Title>Ostoskori</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* Ostoskorin sisältö */}
+          {<CartContent />}
 
         </Modal.Body>
         <Modal.Footer>

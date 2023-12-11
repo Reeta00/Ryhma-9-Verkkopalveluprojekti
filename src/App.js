@@ -11,11 +11,30 @@ import { CartContent } from './CartContent';
 import { Home } from './Home';
 import getProductData from './ProductData';
 
+
+
 const App = () => {
 
   const { product } = getProductData;
   const [cartItems, setCartItems] = useState([]);
+  const [/*totalPrice*/, setTotalPrice] = useState('');
 
+
+  useEffect(() => {
+
+    const getItemsFromLocalStorage = () => {
+      const savedCartItems = localStorage.getItem('cartItems');
+      if (savedCartItems) {
+        setCartItems(JSON.parse(savedCartItems));
+      }
+    };
+
+    getItemsFromLocalStorage();
+  }, []);
+
+  console.log(cartItems);
+
+  //Funktio, joka lisää tuotteen ostoskoriin
   const onAdd = (product) => {
 
     const storedCartItems = localStorage.getItem('cartItems');
@@ -31,43 +50,48 @@ const App = () => {
       existingCartItems.push({ ...product, qty: 1 });
     }
 
+    existingCartItems = existingCartItems.map((item) => ({
+      ...item,
+      totalPrice: item.price * item.qty,
+    }));
+
+    const newTotalPrice = existingCartItems.reduce((total, item) => {
+      return total + item.price * item.qty;
+    }, 0);
+
     setCartItems(existingCartItems);
+    setTotalPrice(newTotalPrice);
+
+    // Update localStorage with the latest cart items
     localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
+    localStorage.setItem('totalPrice', newTotalPrice);
   };
 
+  //Funktio, joka poistaa tuotteen ostoskorista
   const onRemove = (product) => {
     const exist = cartItems.find((x) => x.id === product.id);
+
+    let newCartItems;
+
     if (exist.qty === 1) {
-
-      const newCartItems = cartItems.filter((x) => x.id !== product.id);
-      setCartItems(newCartItems);
-      localStorage.setItem('cartItems', JSON.stringify(newCartItems));
+      newCartItems = cartItems.filter((x) => x.id !== product.id);
     } else {
-
-      const newCartItems = cartItems.map((x) =>
-        x.id === product.id ? { ...exist, qty: exist.qty - 1 } : x
+      newCartItems = cartItems.map((x) =>
+        x.id === product.id ? { ...exist, qty: exist.qty - 1, totalPrice: exist.price * (exist.qty - 1) } : x
       );
-      setCartItems(newCartItems);
-      localStorage.setItem('cartItems', JSON.stringify(newCartItems));
     }
+
+    const newTotalPrice = newCartItems.reduce((total, item) => {
+      return total + item.price * item.qty;
+    }, 0);
+
+    setCartItems(newCartItems);
+    setTotalPrice(newTotalPrice);
+
+    // Update localStorage with the latest cart items
+    localStorage.setItem('cartItems', JSON.stringify(newCartItems));
+    localStorage.setItem('totalPrice', newTotalPrice);
   };
-
-  /*const onAdd = (product) => {
-    const existingProduct = cartItems.find(item => item.id === product.id);
-
-    if (existingProduct) {
-      setCartItems(cartItems.map(item => item.id === product.id ? { ...existingProduct, qty: existingProduct.qty + 1 } : item
-      )
-      );
-    } else {
-      const newCartItems = [...cartItems, { ...product, qty: 1 }];
-      console.log(product)
-      console.log(newCartItems)
-      setCartItems(newCartItems)
-      localStorage.setItem('cartItems', JSON.stringify(newCartItems));
-      //setCartItems([...cartItems, { ...product, qty: 1 }]);
-    }
-  };*/
 
   useEffect(() => {
     setCartItems(localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []);

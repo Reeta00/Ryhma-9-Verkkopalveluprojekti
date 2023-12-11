@@ -48,6 +48,11 @@ function Header() {
               style={{ '--bs-scroll-height': '100px' }}
             >
               <li className="nav-item">
+                <a className="nav-link" href="/home">
+                  Etusivu
+                </a>
+              </li>
+              <li className="nav-item">
                 <a className="nav-link" href="/categories">
                   Kategoriat
                 </a>

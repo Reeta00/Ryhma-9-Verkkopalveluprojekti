@@ -102,12 +102,10 @@ const App = () => {
     <Router>
       <Header />
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/home' element={<Home />} />
-        <Route path='/categories' element={<CategoriesPage />} />
-        <Route path='/categories' element={<BooksList />} />
         <Route path='/' element={<Home cartItems={cartItems} onAdd={onAdd} product={product} onRemove={onRemove} />} />
         <Route path='/home' element={<Home cartItems={cartItems} onAdd={onAdd} product={product} onRemove={onRemove} />} />
+        <Route path='/categories' element={<CategoriesPage />} />
+        <Route path='/categories' element={<BooksList />} />
         <Route path='/bestsellers' element={<BestSellers />} />
         <Route path='/login' element={<Login />} />
         <Route path='/admin' element={<Admin />} />

@@ -135,7 +135,7 @@ export const CartContent = () => {
         <Row className="mt-4">
           <Col>
             <div className="d-flex justify-content-between">
-              <strong>Hinta yhteensä: {Number(totalPrice).toFixed(2)}</strong>
+              <strong>Hinta yhteensä: {Number(totalPrice).toFixed(2)} €</strong>
               <Button variant="danger" onClick={clearCart}>
                 Tyhjennä kori
               </Button>

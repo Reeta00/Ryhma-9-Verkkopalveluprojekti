@@ -105,8 +105,8 @@ app.delete('/delete/:product_id', (req, res) => {
         } else {
             res.send(result);
         }
-    })
-})
+    });
+});
 
 app.get('/bestsellers', (req, res) => {
     const query = 'SELECT * FROM product WHERE is_bestseller = true';
@@ -130,7 +130,7 @@ app.put('/bestsellers/:product_id', (req, res) => {
         if (error) {
             console.log(error);
         } else {
-            res.json({ success: true});
+            res.json({ success: true });
         }
     });
 });

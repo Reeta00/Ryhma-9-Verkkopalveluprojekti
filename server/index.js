@@ -56,6 +56,20 @@ app.get("/categories", (req, res) => {
     });
 });
 
+app.get("/books/category/:category", (req, res) => { 
+    const { category } = req.params;
+
+    db.query("SELECT * FROM product WHERE category_id IN (SELECT category_id FROM category WHERE name = ?)", [category], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Internal server error");
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+
 app.post("/add-category", (req, res) => {
     const name = req.body.name;
 

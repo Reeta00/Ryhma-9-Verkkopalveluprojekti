@@ -1,51 +1,50 @@
-/* Style */
 header {
     background-color: #07436f;
-    /* Set your desired background color */
+
     padding: 10px;
-    /* Add padding for better spacing */
+
 }
 
-/* Set the background color for the entire navigation bar */
+
 .navbar {
     background-color: #1388af !important;
-    /* Use !important to ensure the style is applied */
+
 }
 
 .navbar-brand {
     color: #ffffff;
-    /* Set the color of the navbar brand text */
+
 }
 
 .navbar-nav a {
     color: rgb(0, 0, 0);
-    /* Set the color of the navigation links */
+
     margin-right: 15px;
-    /* Add margin to the right of each link for spacing */
+
 }
 
 .navbar-toggler-icon {
     background-color: #2a6562;
     ;
-    /* Set the color of the navbar toggler icon */
+
 }
 
-/* Footer.css */
+
 footer {
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
     background-color: #07436f;
-    /* Set your desired background color */
+
     padding: 10px;
-    /* Add padding for better spacing */
+
     color: #ffffff;
-    /* Set the color of the text */
+
     text-align: center;
-    /* Center the text */
+
     margin-top: 20px;
-    /* Add top margin for separation */
+
 }
 
 .custom-card-img {
@@ -58,7 +57,7 @@ footer {
     margin-bottom: 70px;
 }
 
-/* Cart style */
+
 .modal-right {
     position: fixed;
     right: 0;
@@ -70,5 +69,3 @@ footer {
     max-width: 100%;
     width: 20rem;
 }
-
-/* Add more styles as needed */

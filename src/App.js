@@ -64,7 +64,7 @@ const App = () => {
     setCartItems(existingCartItems);
     setTotalPrice(newTotalPrice);
 
-    // Update localStorage with the latest cart items
+
     localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
     localStorage.setItem('totalPrice', newTotalPrice);
   };
@@ -90,7 +90,7 @@ const App = () => {
     setCartItems(newCartItems);
     setTotalPrice(newTotalPrice);
 
-    // Update localStorage with the latest cart items
+
     localStorage.setItem('cartItems', JSON.stringify(newCartItems));
     localStorage.setItem('totalPrice', newTotalPrice);
   };

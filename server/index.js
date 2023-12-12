@@ -17,14 +17,15 @@ const db = mysql.createConnection({
 
 app.post('/add', (req, res) => {
     const title = req.body.title;
-    const author = req.body.author;
+    const author_id = req.body.author_id;
     const publish = req.body.publish;
-    const description = req.body.description;
+    const product_description = req.body.product_description;
     const category_id = req.body.category_id;
     const price = req.body.price;
+    const img_url = req.body.img_url;
 
-    db.query('INSERT INTO product (title, author, publish, description, category_id, price) VALUES (?, ?, ?, ?, ?, ?)',
-        [title, author, publish, description, category_id, price], (err, result) => {
+    db.query('INSERT INTO product (title, author_id, publish, product_description, category_id, price, img_url) VALUES (?,?, ?, ?, ?, ?, ?)',
+        [title, author_id, publish, product_description, category_id, price, img_url], (err, result) => {
             if (err) {
                 console.log(err);
             } else {
@@ -34,6 +35,37 @@ app.post('/add', (req, res) => {
     );
 
 });
+
+app.get('/books-with-categories-and-authors', (req, res) => {
+    const query = `
+        SELECT p.*, c.name as category_name, a.author_name
+        FROM product p
+        JOIN category c ON p.category_id = c.category_id
+        JOIN author a ON p.author_id = a.author_id;
+    `;
+
+    db.query(query, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        } else {
+            res.status(200).json(result);
+        }
+    });
+});
+
+
+app.get('/books-with-categories', (req, res) => {
+    db.query('SELECT p.*, c.name as category_name FROM product p JOIN category c ON p.category_id = c.category_id', (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        } else {
+            res.status(200).json(result);
+        }
+    });
+});
+
 
 app.get("/books", (req, res) => {
     db.query("SELECT * FROM product", (err, result) => {
@@ -45,6 +77,15 @@ app.get("/books", (req, res) => {
     });
 });
 
+app.get("/authors", (req, res) => {
+    db.query("SELECT * FROM author", (err, result) => {
+        if (err) {
+            res.status(500).send("Internal server error");
+        } else {
+            res.send(result);
+        }
+    });
+});
 
 app.get("/categories", (req, res) => {
     db.query("SELECT * FROM category", (err, result) => {
@@ -56,7 +97,7 @@ app.get("/categories", (req, res) => {
     });
 });
 
-app.get("/books/category/:category", (req, res) => { 
+app.get("/books/category/:category", (req, res) => {
     const { category } = req.params;
 
     db.query("SELECT * FROM product WHERE category_id IN (SELECT category_id FROM category WHERE name = ?)", [category], (err, result) => {
@@ -69,6 +110,18 @@ app.get("/books/category/:category", (req, res) => {
     });
 });
 
+app.post("/add-author", (req, res) => {
+    const author_name = req.body.author_name;
+
+    db.query('INSERT INTO author (author_name) VALUES (?)', [author_name], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Internal server error');
+        } else {
+            res.send('author added')
+        }
+    });
+});
 
 app.post("/add-category", (req, res) => {
     const name = req.body.name;

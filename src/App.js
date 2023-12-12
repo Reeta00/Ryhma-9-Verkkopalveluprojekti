@@ -21,6 +21,7 @@ const App = () => {
   const [/*totalPrice*/, setTotalPrice] = useState('');
 
 
+
   useEffect(() => {
 
     const getItemsFromLocalStorage = () => {
@@ -94,9 +95,7 @@ const App = () => {
     localStorage.setItem('totalPrice', newTotalPrice);
   };
 
-  useEffect(() => {
-    setCartItems(localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []);
-  }, []);
+
 
   return (
     <Router>

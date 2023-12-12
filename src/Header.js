@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { CartContent } from './CartContent';
 
 
-function Header() {
+function Header({ cartQuantity }) {
 
   const handlePurchase = () => {
 

@@ -1,52 +1,72 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Card, Button, Form, Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import './Style.css';
 
 
 export const Admin = () => {
     const [title, setTitle] = useState('');
-    const [author, setAuthor] = useState('');
     const [publish, setPublish] = useState('');
     const [description, setDescription] = useState('');
-    const [category,] = useState('');
     const [price, setPrice] = useState('');
 
     const [bookList, setBookList] = useState([]);
 
     const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState();
     const [newCategory, setNewCategory] = useState('');
 
+    const [authors, setAuthors] = useState([]);
+    const [selectedAuthor, setSelectedAuthor] = useState();
+    const [newAuthor, setNewAuthor] = useState('');
+
+    const [img_url] = useState('')
     const [newDescription, setNewDescription] = useState('');
+
+    const [showBooks, setShowBooks] = useState(false);
+
+
 
     //Lisää kirjan kantaan
     const addBook = () => {
+        console.log(selectedAuthor, 'is authorid')
+        console.log(selectedCategory, 'is categoryid')
         axios.post('http://localhost:3001/add', {
             title: title,
-            author: author,
+            author_id: selectedAuthor,
             publish: publish,
-            description: description,
-            category: category,
-            price: price
+            product_description: description,
+            category_id: selectedCategory,
+            price: price,
+            img_url: img_url
         }).then(() => {
             console.log('Succsess!')
         })
     };
 
-    //Hakee kannasta kaikki kirjat
     const getBooks = () => {
-        axios.get('http://localhost:3001/books').then((response) => {
-
-            //Muutetaan category_id näkymään id numeron sijaan kategorian nimenä
-            const booksWithCategoryName = response.data.map((book) => {
-                const category = categories.find((cat) => cat.category_id === book.category_id);
-                return { ...book, category_name: category ? category.name : '' };
+        if (showBooks) {
+            axios.get("http://localhost:3001/books-with-categories-and-authors").then((response) => {
+                setBookList(response.data);
             });
-            setBookList(booksWithCategoryName);
-        });
+        }
     };
+
+    const toggleBooksVisibility = () => {
+        setShowBooks((prevShowBooks) => !prevShowBooks);
+    };
+
+    useEffect(() => {
+        if (showBooks) {
+            axios.get("http://localhost:3001/books-with-categories-and-authors").then((response) => {
+                setBookList(response.data);
+            });
+        }
+    }, [showBooks]);
+
 
     //Muuttaa kuvausta tietokannassa
     const updateDescription = (product_id) => {
@@ -60,13 +80,13 @@ export const Admin = () => {
 
     const markAsBestseller = (product_id, is_bestseller) => {
         axios.put(`http://localhost:3001/bestsellers/${product_id}`, { is_bestseller })
-        .then((response) => {
-            console.log(response.data);
-            getBooks();
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+            .then((response) => {
+                console.log(response.data);
+                getBooks();
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     useEffect(() => {
@@ -91,6 +111,30 @@ export const Admin = () => {
         setSelectedCategory(event.target.value);
     };
 
+
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/authors')
+            .then(response => setAuthors(response.data))
+            .catch(error => console.error(error));
+    }, []);
+
+    const handleAddAuthor = () => {
+        axios.post('http://localhost:3001/add-author', {
+            author_name: newAuthor
+        }).then(response => {
+            console.log(response.data);
+            axios.get('http://localhost:3001/authors')
+                .then(response => setAuthors(response.data))
+                .catch(error => console.error(error));
+        })
+            .catch(error => console.error(error));
+    };
+
+    const handleAuthorChange = (event) => {
+        setSelectedAuthor(event.target.value);
+    };
+
     //Poistaa tuotteen kannasta
     const deleteBook = (product_id) => {
         axios.delete(`http://localhost:3001/delete/${product_id}`).then((response) => {
@@ -100,21 +144,38 @@ export const Admin = () => {
         })
     }
 
-    return (
-        <div className="container mt-5">
-            <div className="row">
-                <div className="col-md-6">
-                    <div className="info">
-                        <h2>Ylläpitosivu. Ylläpitäjä saa lisättyä tästä kantaan kirjoja ja katsella mitä kirjoja jo löytyy ym. Hyvin keskeneräinen vielä..</h2>
 
+
+    return (
+        <Container className="mt-5">
+            <Row className="justify-content-md-center">
+                <Col md={6}>
+                    <div className="info">
                         <div className="mb-3">
                             <label className="form-label">Kirjan nimi:</label>
-                            <input type="text" className="form-control" onChange={e => setTitle(e.target.value)} />
+                            <input type="text" className="form-control" onChange={(e) => setTitle(e.target.value)} />
                         </div>
 
                         <div className="mb-3">
-                            <label className="form-label">Kirjailijan nimi:</label>
-                            <input type="text" className="form-control" onChange={e => setAuthor(e.target.value)} />
+                            <label className="form-label">Kirjailija:</label>
+                            <select className="form-select" value={selectedAuthor} onChange={handleAuthorChange}>
+                                <option value="">Valitse kirjailija</option>
+                                {authors.map(author => (
+                                    <option key={author.author_id} value={author.author_id}>
+                                        {author.author_name}
+                                    </option>
+                                ))}
+                            </select>
+                            <div className="input-group mt-2">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Lisää uusi kirjailija"
+                                    value={newAuthor}
+                                    onChange={(e) => setNewAuthor(e.target.value)}
+                                />
+                                <button className="btn btn-outline-secondary" onClick={handleAddAuthor}>Lisää kirjailija</button>
+                            </div>
                         </div>
 
                         <div className="mb-3">
@@ -130,9 +191,9 @@ export const Admin = () => {
                         <div className="mb-3">
                             <label className="form-label">Kirjan kategoria:</label>
                             <select className="form-select" value={selectedCategory} onChange={handleCategoryChange}>
-                                <option value="" disabled>Valitse kategoria</option>
+                                <option value="" >Valitse kategoria</option>
                                 {categories.map(category => (
-                                    <option key={category.category_id} value={category.name}>
+                                    <option key={category.category_id} value={category.category_id}>
                                         {category.name}
                                     </option>
                                 ))}
@@ -154,38 +215,60 @@ export const Admin = () => {
                             <input type="text" className="form-control" onChange={e => setPrice(e.target.value)} />
                         </div>
 
-                        <button className="btn btn-primary" onClick={addBook}>Lisää kirja</button>
+                        <Button className="btn btn-primary" onClick={addBook}>
+                            Lisää kirja
+                        </Button>
                     </div>
-                </div>
+                </Col>
+            </Row>
 
-                <div className="col-md-6">
-                    <div className="books">
-                        <button className="btn btn-primary mb-3" onClick={getBooks}>
-                            Näytä kirjat
-                        </button>
+            <Row className="justify-content-md-center">
+                <Col md={6}>
+                    <Button className="btn btn-primary mb-3" onClick={toggleBooksVisibility}>
+                        {showBooks ? 'Piilota kirjat' : 'Näytä kirjat'}
+                    </Button>
+                </Col>
+                <Col md={12}>
+                    {showBooks && (
+                        <Row xs={1} md={4} lg={4} className="g-4">
+                            {bookList.map((val) => (
+                                <Col key={val.product_id}>
+                                    <Card className="mb-3">
+                                        <Card.Img
+                                            variant="top"
+                                            src={val.img_url}
+                                            alt={val.title}
+                                            className="book-cover-image"
+                                        />
+                                        <Card.Body>
+                                            <Card.Title>Nimi: {val.title}</Card.Title>
+                                            <Card.Subtitle className="mb-2 text-muted">Kirjailija: {val.author_name}</Card.Subtitle>
+                                            <Card.Text>Julkaisuvuosi: {val.publish}</Card.Text>
+                                            <Card.Text>Kuvaus: {val.product_description}</Card.Text>
+                                            <Card.Text>Kategoria: {val.category_name}</Card.Text>
+                                            <Card.Text>Hinta: {val.price} €</Card.Text>
 
-                        {bookList.map((val, index) => (
-                            <div key={index} className="card mb-3">
-                                <div className="card-body">
-                                    <h3 className="card-title">Nimi: {val.title}</h3>
-                                    <h3 className="card-subtitle mb-2 text-muted">Kirjailija: {val.author_id}</h3>
-                                    <p className="card-text">Julkaisuvuosi: {val.publish}</p>
-                                    <p className="card-text">Kuvaus: {val.product_description}</p>
-                                    <p className="card-text">Kategoria: {val.category_name}</p>
-                                    <p className="card-text">Hinta: {val.price} €</p>
-                                    <div className="input-group mb-3">
-                                        <input type="text" className="form-control" placeholder="Päivitä kuvausta" onChange={(e) => { setNewDescription(e.target.value) }} />
-                                        <button className="btn btn-outline-secondary" onClick={() => { updateDescription(val.product_id) }}>Päivitä kuvausta</button>
-                                        <button className="btn btn-outline-secondary" onClick={() => { deleteBook(val.product_id) }}>Poista kirja</button>
-                                        <button className="btn btn-outline-secondary" onClick={() =>  markAsBestseller(val.product_id, !val.is_bestseller)}>{val.is_bestseller ? 'Poista myydyimmistä' : 'Merkkaa myydyimmäksi'}</button>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </div>
+                                            <Form.Group className="mb-3">
+                                                <Form.Control type="text" placeholder="Päivitä kuvausta" onChange={(e) => { setNewDescription(e.target.value) }} />
+                                                <Button variant="outline-secondary" onClick={() => { updateDescription(val.product_id) }}>Päivitä kuvausta</Button>
+                                                <Button variant="outline-secondary" onClick={() => { deleteBook(val.product_id) }}>Poista kirja</Button>
+                                                <Button variant="outline-secondary" onClick={() => markAsBestseller(val.product_id, !val.is_bestseller)}>
+                                                    {val.is_bestseller ? 'Poista myydyimmistä' : 'Merkkaa myydyimmäksi'}
+                                                </Button>
+                                            </Form.Group>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            ))}
+                            <Col md={6}>
+                                <Button className="btn btn-primary mb-3" onClick={toggleBooksVisibility}>
+                                    {showBooks ? 'Piilota kirjat' : 'Näytä kirjat'}
+                                </Button>
+                            </Col>
+                        </Row>
+                    )}
+                </Col>
+            </Row>
+        </Container>
     );
-
 };

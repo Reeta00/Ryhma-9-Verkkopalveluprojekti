@@ -11,20 +11,48 @@ export const CategoriesPage = () => {
       .catch(error => console.error(error));
   }, []);
 
+  const handleAddToCart = (book) => {
+    // Lisää tuote local storageen
+    const storedCartItems = localStorage.getItem('cartItems');
+    let existingCartItems = storedCartItems ? JSON.parse(storedCartItems) : [];
+
+    const existingItem = existingCartItems.find((x) => x.product_id === book.product_id && x.qty === 1);
+
+    if (existingItem) {
+      existingItem.qty += 1;
+    } else {
+      existingCartItems.push({ ...book, qty: 1 });
+    }
+
+    existingCartItems = existingCartItems.map((item) => ({
+      ...item,
+      totalPrice: item.price * item.qty,
+      img: item.img_url,
+    }));
+
+    const newTotalPrice = existingCartItems.reduce((total, item) => {
+      return total + item.price * item.qty;
+    }, 0);
+    console.log(existingCartItems);
+    localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
+    localStorage.setItem('totalPrice', newTotalPrice.toString());
+    
+  };
+
   return (
     <Container>
-     <br></br>
+      <br />
       {categories.map(category => (
         <div key={category.category_id}>
           <h3>{category.name}</h3>
-          <BooksList category={category.name} />
+          <BooksList category={category.name} onAddToCart={handleAddToCart} />
         </div>
       ))}
     </Container>
   );
 };
 
-export const BooksList = ({ category }) => {
+export const BooksList = ({ category, onAddToCart }) => {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
@@ -47,7 +75,9 @@ export const BooksList = ({ category }) => {
             <Card.Body>
               <Card.Title>{book.title}</Card.Title>
               <Card.Text>Hinta: {book.price} €</Card.Text>
-              <Button variant="outline-dark">Lisää ostoskoriin</Button>
+              <Button variant="outline-dark" onClick={() => onAddToCart(book)}>
+                Lisää ostoskoriin
+              </Button>
             </Card.Body>
           </Card>
         </Col>
@@ -55,6 +85,3 @@ export const BooksList = ({ category }) => {
     </Row>
   );
 };
-
-
-

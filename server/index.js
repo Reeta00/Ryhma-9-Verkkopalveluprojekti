@@ -3,10 +3,36 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql2');
 const cors = require('cors');
+
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 app.use(express.static('public'));
 
-app.use(cors());
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+
 app.use(express.json());
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true
+}));
+
+app.use(cookieParser())
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(session({
+    key: "userId",
+    secret: "groupNine",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expire: 60 * 60 * 24,
+    },
+})
+);
 
 const db = mysql.createConnection({
     host: process.env.BD_HOST,
@@ -184,6 +210,79 @@ app.put('/bestsellers/:product_id', (req, res) => {
             console.log(error);
         } else {
             res.json({ success: true });
+        }
+    });
+});
+
+//Login-sivun endpointit
+
+app.post('/register', (req, res) => {
+
+    const user_name = req.body.user_name;
+    const user_password = req.body.user_password;
+    const user_email = req.body.user_email;
+
+    bcrypt.hash(user_password, saltRounds, (err, hash) => {
+
+        if (err) {
+            console.log(err)
+        } else {
+            res.send({ message: 'Rekisteröityminen onnistui! Kirjaudu sisään käyttäjätunnuksillasi!' })
+        }
+
+        db.query('INSERT INTO user_login (user_name, user_password, user_email) VALUES (?,?, ?)',
+            [user_name, hash, user_email], (err, result) => {
+                console.log(err);
+            })
+    })
+
+
+});
+
+app.get('/login', (req, res) => {
+    if (req.session.user_name) {
+        res.send({ loggedIn: true, user_name: req.session.user_name })
+    } else {
+        res.send({ loggedIn: false });
+    }
+})
+
+app.post('/login', (req, res) => {
+    const user_identifier = req.body.user_identifier;
+    const user_password = req.body.user_password;
+
+    db.query('SELECT * FROM user_login WHERE user_name = ? OR user_email = ?;',
+        [user_identifier, user_identifier],
+        (err, result) => {
+            if (err) {
+                res.send({ err: err });
+            }
+
+            if (result.length > 0) {
+                bcrypt.compare(user_password, result[0].user_password, (error, response) => {
+                    if (response) {
+                        req.session.user_name = result;
+                        console.log(req.session.user_name);
+                        res.send({ loggedIn: true, user_name: result[0].user_name });
+                    } else {
+                        res.send({ message: "Väärä käyttäjänimi tai salasana" });
+                    }
+                });
+            } else {
+                res.send({ loggedIn: false, message: "Käyttäjää ei löydy" });
+            }
+        });
+
+});
+
+app.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error destroying session:', err);
+            res.status(500).send({ loggedIn: true });
+        } else {
+            res.clearCookie('userId');
+            res.send({ loggedIn: false });
         }
     });
 });

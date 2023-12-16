@@ -16,7 +16,7 @@ const session = require('express-session');
 app.use(express.json());
 app.use(cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
 
@@ -164,8 +164,8 @@ app.post("/add-category", (req, res) => {
 
 app.put('/update', (req, res) => {
     const product_id = req.body.product_id;
-    const description = req.body.description;
-    db.query("UPDATE product SET description = ? WHERE product_id = ?",
+    const description = req.body.product_description;
+    db.query("UPDATE product SET product_description = ? WHERE product_id = ?",
         [description, product_id],
         (err, result) => {
             if (err) {

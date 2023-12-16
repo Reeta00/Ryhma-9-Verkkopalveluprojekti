@@ -70,12 +70,22 @@ export const Admin = () => {
 
     //Muuttaa kuvausta tietokannassa
     const updateDescription = (product_id) => {
-        axios.put('http://localhost:3001/update', { product_description: newDescription, product_id: product_id }).then(
-            (response) => {
-                setBookList(bookList.map((val) => {
-                    return val.product_id === product_id ? { product_id: val.product_id, title: val.title, author_id: val.author_id, publish: val.publish, product_description: newDescription, category_id: val.category_id, price: val.price } : val;
-                }));
-            });
+        axios.put('http://localhost:3001/update', {
+            product_description: newDescription,
+            product_id: product_id
+        }).then((response) => {
+            setBookList(bookList.map((val) => {
+                return val.product_id === product_id ? {
+                    product_id: val.product_id,
+                    title: val.title,
+                    author_id: val.author_id,
+                    publish: val.publish,
+                    product_description: newDescription,
+                    category_id: val.category_id,
+                    price: val.price
+                } : val;
+            }));
+        });
     };
 
     const markAsBestseller = (product_id, is_bestseller) => {

@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS store_db;
+DROP DATABASE store_db;
 
 CREATE DATABASE store_db;
 
@@ -37,7 +37,9 @@ CREATE TABLE
         FOREIGN KEY (author_id) REFERENCES author(author_id)
     );
 
-    ALTER TABLE product ADD COLUMN is_bestseller BOOLEAN DEFAULT false;
+ALTER TABLE product
+ADD
+    COLUMN is_bestseller BOOLEAN DEFAULT false;
 
 INSERT INTO
     product (
@@ -172,29 +174,10 @@ VALUES (
     );
 
 CREATE TABLE
-    customer (
-        customer_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        first_name VARCHAR(255) NOT NULL,
-        last_name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL
-    );
-
-CREATE TABLE
     user_login (
         user_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         user_name VARCHAR(255) NOT NULL,
         user_password VARCHAR(255) NOT NULL,
-        customer_id INT NOT NULL,
-        FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
-    );
-
-CREATE TABLE
-    shopping_cart (
-        cart_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        customer_id INT NOT NULL,
-        product_id INT NOT NULL,
-        quantity INT NOT NULL,
-        discount DECIMAL(10, 2) DEFAULT 0,
-        FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
-        FOREIGN KEY (product_id) REFERENCES product(product_id)
+        user_email VARCHAR(255) NOT NULL,
+        user_role VARCHAR(255) DEFAULT 'user'
     );

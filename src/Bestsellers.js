@@ -12,6 +12,34 @@ export const BestSellers = () => {
         });
     }, []);
 
+    const handleAddToCart = (book) => {
+        // Similar logic as in CategoriesPage handleAddToCart
+    
+        const storedCartItems = localStorage.getItem('cartItems');
+        let existingCartItems = storedCartItems ? JSON.parse(storedCartItems) : [];
+    
+        const existingItem = existingCartItems.find((x) => x.product_id === book.product_id && x.qty === 1);
+    
+        if (existingItem) {
+          existingItem.qty += 1;
+        } else {
+          existingCartItems.push({ ...book, qty: 1 });
+        }
+    
+        existingCartItems = existingCartItems.map((item) => ({
+          ...item,
+          totalPrice: item.price * item.qty,
+          img: item.img_url,
+        }));
+    
+        const newTotalPrice = existingCartItems.reduce((total, item) => {
+          return total + item.price * item.qty;
+        }, 0);
+    
+        localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
+        localStorage.setItem('totalPrice', newTotalPrice.toString());
+      };
+
     return (
         <Container className="mt-5">
             <h2 className="mb-4">Myydyimmät kirjat</h2>
@@ -28,7 +56,8 @@ export const BestSellers = () => {
                            <Card.Body>
                             <Card.Title>{val.title}</Card.Title>
                             <Card.Text>Hinta: {val.price} €</Card.Text>
-                            <Button variant="outline-dark">Lisää ostoskoriin</Button>
+                            <Button variant="outline-dark" onClick={() => handleAddToCart(val)}>
+                            Lisää ostoskoriin</Button>
                            </Card.Body>
                         </Card>
                      </Col>

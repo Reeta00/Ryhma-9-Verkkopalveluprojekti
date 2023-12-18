@@ -28,7 +28,7 @@ export const Admin = () => {
 
     const [showBooks, setShowBooks] = useState(false);
 
-
+    const defaultImg = '/default.jpg';
 
     //Lisää kirjan kantaan
     const addBook = () => {
@@ -41,7 +41,7 @@ export const Admin = () => {
             product_description: description,
             category_id: selectedCategory,
             price: price,
-            img_url: img_url
+            img_url: img_url || defaultImg,
         }).then(() => {
             console.log('Succsess!')
         })
@@ -246,7 +246,7 @@ export const Admin = () => {
                                     <Card className="mb-3">
                                         <Card.Img
                                             variant="top"
-                                            src={val.img_url}
+                                            src={val.img_url ? val.img_url : process.env.PUBLIC_URL + defaultImg}
                                             alt={val.title}
                                             className="book-cover-image"
                                         />

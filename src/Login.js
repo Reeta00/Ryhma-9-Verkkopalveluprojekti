@@ -57,8 +57,11 @@ export const Login = () => {
 
             }).then((response) => {
 
+                console.log(response.data);
+
                 if (response.data.loggedIn) {
                     setLoginStatus(response.data.user_name);
+                    console.log(loginStatus);
                     setUserIdentifier('');
                     setPassword('');
                     setShowLogoutButton(true);
@@ -189,7 +192,7 @@ export const Login = () => {
                             {loginStatus && (
                                 <div className={loginStatus.includes("Väärä käyttäjänimi tai salasana") || loginStatus.includes("Käyttäjää ei löydy") ? 'red-text' : ''} style={{ marginTop: '20px', textAlign: 'center' }}>
 
-                                    <h4>{loginStatus}</h4>
+                                    <h4>{`Olet kirjautunut käyttäjällä: ${loginStatus}`}</h4>
                                     {showLogoutButton && (
                                         <Button className='submit btn-block' variant='primary' size='lg' onClick={logout}>
                                             Kirjaudu ulos

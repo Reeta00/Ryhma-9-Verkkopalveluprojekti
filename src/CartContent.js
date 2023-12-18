@@ -93,37 +93,46 @@ export const CartContent = () => {
       <Row className="mt-4">
         <Col>
           {cartItems.length === 0 ? (
-            <div>Ostoskori on tyhjä</div>
+            <div className="empty-cart-message">Ostoskori on tyhjä</div>
           ) : (
             <ListGroup>
               {cartItems.map((item) => (
-                <ListGroup.Item key={item.id}>
-                  <div className="d-flex justify-content-between align-items-center">
+                <ListGroup.Item key={item.id} className="cart-item">
+                  <div className="d-flex align-items-center">
                     <Image
                       src={`http://localhost:3000/${item.img}`}
                       alt={item.title}
                       thumbnail
                       fluid
-                      style={{ maxHeight: '80px' }}
+                      className="cart-item-image"
                     />
-                    <div>
-                      <Button
-                        variant="success"
-                        onClick={() => onAdd(item)}
-                        style={{ width: '30px', fontSize: '0.8rem' }}
-                      >
-                        +
-                      </Button>{' '}
-                      <Button
-                        variant="danger"
-                        onClick={() => onRemove(item)}
-                        style={{ width: '30px', fontSize: '0.8rem' }}
-                      >
-                        -
-                      </Button>
+                    <div className="cart-item-details">
+                      <div className="d-flex justify-content-between align-items-center">
+                        <div>
+                          <div className="cart-item-title">{item.title}</div>
+                          <div className="cart-item-quantity">
+                            <Button
+                              variant="success"
+                              onClick={() => onAdd(item)}
+                              className="cart-item-action"
+                            >
+                              +
+                            </Button>
+                            <span className="quantity">{item.qty}</span>
+                            <Button
+                              variant="danger"
+                              onClick={() => onRemove(item)}
+                              className="cart-item-action"
+                            >
+                              -
+                            </Button>
+                          </div>
+                          <div className="cart-item-price">
+                            {Number(item.totalPrice).toFixed(2)} €
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div>{item.qty} kpl</div>
-                    <div>Hinta: {Number(item.totalPrice).toFixed(2)} €</div>
                   </div>
                 </ListGroup.Item>
               ))}
@@ -134,9 +143,9 @@ export const CartContent = () => {
       {cartItems.length > 0 && (
         <Row className="mt-4">
           <Col>
-            <div className="d-flex justify-content-between">
+            <div className="d-flex justify-content-between align-items-center">
               <strong>Hinta yhteensä: {Number(totalPrice).toFixed(2)} €</strong>
-              <Button variant="danger" onClick={clearCart}>
+              <Button variant="danger" onClick={clearCart} className="clear-cart-button">
                 Tyhjennä kori
               </Button>
             </div>

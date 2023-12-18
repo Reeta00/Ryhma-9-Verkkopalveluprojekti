@@ -4,7 +4,7 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import getProductData from './ProductData';
 
 export const Product = (props) => {
-    const { onAdd } = props;
+    const { onAdd, loginStatus } = props;
 
     const [products, setProducts] = useState([]);
 
@@ -19,7 +19,10 @@ export const Product = (props) => {
 
     return (
         <Container className="mt-5">
-            <h2 className="mb-4">Tervetuloa Novellinurkkaan!</h2>
+            <h2 className="mb-4">
+                Tervetuloa Novellinurkkaan
+                {loginStatus.user_name && `, ${loginStatus.user_name}`}!
+            </h2>
             <Row>
                 {products.map((product) => (
                     < Col key={product.id} md={4} className="mb-4" >
